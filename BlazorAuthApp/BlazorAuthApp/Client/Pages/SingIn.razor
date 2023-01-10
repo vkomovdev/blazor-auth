@@ -1,0 +1,47 @@
+﻿@page "/signin"
+@using System.Text.Json;
+@using BlazorAuthApp.Shared;
+@using System.Text;
+@using System.Net.Http.Headers;
+@attribute [AllowAnonymous]
+@inject NavigationManager _navigationManager
+
+@inject HttpClient Http
+
+<form onsubmit="@SubmitLogin">
+    <div>
+        <input class="form-control my-1" placeholder="Username" type="email" id="username" @bind="UserName" />
+        <span class="error" style="display: none;">Please enter a username</span>
+    </div>
+    <div>
+        <input class="form-control my-1" placeholder="Password" type="password" id="password" @bind="Password" />
+        <span class="error" style="display: none;">Please enter a password</span>
+    </div>
+    <button class="btn btn-primary" type="submit">Login</button>
+</form>
+
+@code {
+    private string UserName;
+    private string Password;
+
+    private async Task SubmitLogin()
+    {
+        // create the JSON payload for the request
+        var payload = new User()
+            {
+                UserName = UserName,
+                Password = Password
+            };
+        var jsonPayload = JsonSerializer.Serialize(payload);
+
+         var response = await Http.PostAsync("/SignIn",
+                        new StringContent(jsonPayload, Encoding.UTF8,  MediaTypeHeaderValue.Parse("application/json")));
+
+        if (response.IsSuccessStatusCode)
+        {         
+            _navigationManager.NavigateTo("/", true);
+        }
+    }
+
+}
+

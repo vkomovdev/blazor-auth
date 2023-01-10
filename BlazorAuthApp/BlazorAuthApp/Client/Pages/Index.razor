@@ -1,0 +1,39 @@
+﻿@page "/"
+@attribute [Authorize]
+@inject NavigationManager _navigationManager
+<PageTitle>Index</PageTitle>
+    
+<p>Hello @authMessage</p>
+
+@code {
+    [CascadingParameter]
+    private Task<AuthenticationState> authenticationStateTask { get; set; }
+
+    private string authMessage;
+
+    protected async override Task OnInitializedAsync()
+    {
+        var user = (await authenticationStateTask).User;
+        if (!user.Identity.IsAuthenticated)
+        {
+            _navigationManager.NavigateTo("signin");
+        }
+
+        authMessage = user.Identity.Name;
+    }
+
+    private async Task LogUsername()
+    {
+        var authState = await authenticationStateTask;
+        var user = authState.User;
+
+        if (user.Identity.IsAuthenticated)
+        {
+            authMessage = $"{user.Identity.Name} is authenticated.";
+        }
+        else
+        {
+            authMessage = "The user is NOT authenticated.";
+        }
+    }
+}
