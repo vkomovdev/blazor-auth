@@ -3,6 +3,7 @@
 @using BlazorAuthApp.Shared;
 @using System.Text;
 @using System.Net.Http.Headers;
+@using BlazorAuthApp.Client.Components;
 @attribute [AllowAnonymous]
 @inject NavigationManager _navigationManager
 
@@ -24,6 +25,18 @@
     private string UserName;
     private string Password;
 
+    [CascadingParameter]
+    private Task<AuthenticationState> authenticationStateTask { get; set; }
+
+    protected async override Task OnInitializedAsync()
+    {
+        var user = (await authenticationStateTask).User;
+        if (user.Identity.IsAuthenticated)
+        {
+            _navigationManager.NavigateTo("/");
+        }
+    }
+
     private async Task SubmitLogin()
     {
         // create the JSON payload for the request
@@ -34,7 +47,7 @@
             };
         var jsonPayload = JsonSerializer.Serialize(payload);
 
-         var response = await Http.PostAsync("/SignIn",
+         var response = await Http.PostAsync("/api/SignIn",
                         new StringContent(jsonPayload, Encoding.UTF8,  MediaTypeHeaderValue.Parse("application/json")));
 
         if (response.IsSuccessStatusCode)

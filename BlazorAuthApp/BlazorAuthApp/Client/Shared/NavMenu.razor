@@ -1,4 +1,6 @@
-﻿<div class="top-row ps-3 navbar navbar-dark">
+﻿@using BlazorAuthApp.Client.Components;
+
+<div class="top-row ps-3 navbar navbar-dark">
     <div class="container-fluid">
         <a class="navbar-brand" href="">BlazorAuthApp</a>
         <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
@@ -11,14 +13,18 @@
     <nav class="flex-column">
         <AuthorizeView>            
             <div class="nav-item px-3">
-                <form action="/SignOut" method="post">
+                <form action="/api/SignOut" method="post">
                     <button style="color:#fff" class="nav-link btn btn-link" type="submit">
                         <span class="oi oi-list-rich" aria-hidden="true"></span> Log out
                     </button>
               </form>
             </div>
-        </AuthorizeView>
-            
+            <div class="nav-item px-3">
+                <AlertPanel AlertStyle="alert-light">
+                    Menu info
+                </AlertPanel>
+            </div>
+        </AuthorizeView>            
     </nav>
 </div>
 

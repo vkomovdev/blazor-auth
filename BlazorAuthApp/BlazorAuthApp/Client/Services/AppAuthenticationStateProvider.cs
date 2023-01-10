@@ -53,7 +53,7 @@ namespace BlazorAuthApp.Client.Services
             {
                 _logger.LogInformation("Fetching user information.");                
 
-                var response = await _client.GetAsync("SignIn");
+                var response = await _client.GetAsync("/api/SignIn");
 
                 if (response.StatusCode == HttpStatusCode.OK)
                 {

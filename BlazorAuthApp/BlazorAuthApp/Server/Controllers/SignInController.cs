@@ -7,7 +7,7 @@ using System.Security.Claims;
 namespace BlazorAuthApp.Server.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class SignInController : ControllerBase
     {
 

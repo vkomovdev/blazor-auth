@@ -1,9 +1,15 @@
 ﻿@page "/"
+@using BlazorAuthApp.Client.Components
 @attribute [Authorize]
 @inject NavigationManager _navigationManager
 <PageTitle>Index</PageTitle>
     
-<p>Hello @authMessage</p>
+
+<p>Hello @authMessage !</p>
+
+<AlertPanel AlertStyle="alert-success">
+    Success
+</AlertPanel>
 
 @code {
     [CascadingParameter]
